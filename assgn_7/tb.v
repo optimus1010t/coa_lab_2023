@@ -1,8 +1,8 @@
 module tb;
 
     //inputs
-    reg [31:0] in1;
-    reg [31:0] in2;
+    reg signed [31:0] in1;
+    reg signed [31:0] in2;
     reg shamt;
     reg [3:0] func;
 
@@ -35,3 +35,5 @@ module tb;
         in1 = 123; func = 9;
         #100;
     end
+
+endmodule
