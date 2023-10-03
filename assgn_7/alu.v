@@ -1,5 +1,3 @@
-//REMOVE THE ??? COMMENTS
-
 // module ADD(
 //     input wire [31:0] a,
 //     input wire [31:0] b,
@@ -80,11 +78,11 @@
 
 module alu(
     input signed [31:0] input1,
-    input signed [31:0] input2,     // ??? nisarg had only input1 signed, idk why
-    input shamt,  // nisarg had given 5 bits for this, idk why
+    input signed [31:0] input2,
+    input shamt,
     input [3:0] func,    // alu function chosen
     output reg [31:0] out,
-    output reg [2:0] flags  // carry, sign, zero
+    output reg [2:0] flags  // 2 : carry, 1 : sign, 0 : zero
     );
     wire [31:0] SUM,DIFF,AND,OR,XOR,NOT,SLA,SRA,SRL;
     wire [31:0] not_input2 = ~input2;

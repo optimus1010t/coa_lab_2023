@@ -7,25 +7,6 @@ module CLA_4bit_augmented(
     output g
     );
 	 
-/*
-	Logic:
-	
-	G[i] = in1[i] & in2[i], 0 <= i <= 3
-	P[i] = in1[i] ^ in2[i], 0 <= i <= 3
-	
-	Take c_in to be carry[0] then
-	sum[i] = P[i] ^ carry[i], 0 <= i <= 3
-	carry[i] = G[i-1] | (P[i-1] & carry[i-1]), 1 <= i <= 3
-	
-	Recursively expanding we get
-	carry[1] = G[0] | (P[0] & carry[0]) = G[0] | (P[0] & c_in)
-	carry[2] = G[1] | (P[1] & carry[1]) = G[1] | (P[1] & G[0]) | (P[1] & P[0] & c_in)
-	carry[3] = G[2] | (P[2] & carry[2]) = G[2] | (P[2] & G[1]) | (P[2] & P[1] & G[0]) | (P[2] & P[1] & P[0] & c_in)
-	
-	Also block propogate p and generate g are calculated as
-	p = P[3] & P[2] & P[1] & P[0]
-	g = G[3] | (P[3] & G[2]) | (P[3] & P[2] & G[1]) | (P[3] & P[2] & P[1] & G[0])
-*/
 
 	wire [3:0] G, P, carry; // wires for bitwise generate, propagate and carries
 	
