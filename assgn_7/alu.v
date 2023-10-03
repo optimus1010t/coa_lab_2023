@@ -87,7 +87,7 @@ module alu(
     output reg [2:0] flags  // carry, sign, zero
     );
     wire [31:0] SUM,DIFF,AND,OR,XOR,NOT,SLA,SRA,SRL;
-    wire[31:0] not_input2 = ~input2;
+    wire [31:0] not_input2 = ~input2;
 
     wire diff_borrow,sum_carry,temp_carry,p1,g1,p2,g2;
 
@@ -96,8 +96,8 @@ module alu(
     CLA_16bit_withLCU cla2(.in1(input1[31:16]), .in2(input2[31:16]), .c_in(temp_carry), .sum(SUM[31:16]), .c_out(sum_carry), .p(p2), .g(g2));
     
     //diff
-    CLA_16bit_withLCU cla3(.in1(input1[15:0]), .in2(not_input2[15:0]), .c_in(1'b1), .sum(SUM[15:0]), .c_out(temp_carry), .p(p1), .g(g1));
-    CLA_16bit_withLCU cla4(.in1(input1[31:16]), .in2(not_input2[31:16]), .c_in(temp_carry), .sum(SUM[31:16]), .c_out(diff_borrow), .p(p2), .g(g2));
+    CLA_16bit_withLCU cla3(.in1(input1[15:0]), .in2(not_input2[15:0]), .c_in(1'b1), .sum(DIFF[15:0]), .c_out(temp_carry), .p(p1), .g(g1));
+    CLA_16bit_withLCU cla4(.in1(input1[31:16]), .in2(not_input2[31:16]), .c_in(temp_carry), .sum(DIFF[31:16]), .c_out(diff_borrow), .p(p2), .g(g2));
 
     assign AND = input1 & input2;
     assign OR = input1 | input2;
