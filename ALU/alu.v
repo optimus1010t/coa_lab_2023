@@ -82,7 +82,7 @@ module alu(
     input shamt,
     input [3:0] func,    // alu function chosen
     output reg [31:0] out,
-    output reg [2:0] flags  // 2 : carry, 1 : sign, 0 : zero
+    output reg [2:0] flags  // 2 : carry/borrow, 1 : sign, 0 : zero
     );
     wire [31:0] SUM,DIFF,AND,OR,XOR,NOT,SLA,SRA,SRL;
     wire [31:0] not_input2 = ~input2;
