@@ -1,11 +1,17 @@
 module regbank (
-    input wire clk, write, reset;
+    input wire clk;
+    input wire writeSP, readSP, writeReg, reset;
     input [4:0] sr1, sr2, dr; // source and destination register
-    input [31:0] write_data;
+    input [31:0] write_data, write_dataSP;                  // implemented as independent inputs for the 32 registers and then the sp
     output reg [31:0] read_data1, read_data2;
 )
-    reg [31:0] registers [31:0];
-    assign read_data1 = registers[sr1];    // read ports are always updated based on the addresse of the source registers
+    reg [31:0] registers [31:0];                           // 32 registers; the register at address 31 is the stack pointer                                              
+    if (readSP == 0) begin                                  // read ports are always updated based on the address of the source registers    
+        assign read_data1 = registers[sr1];                 // read_data1 is updated based on the address of the source register
+    end
+    else begin
+        assign read_data1 = registers[31];                             // read_data1 is updated based on the stack pointer if readSP is high
+    end
     assign read_data2 = registers[sr2];
 
     always @(posedge clk)         // write always happens on posedge of the clock
@@ -20,9 +26,11 @@ module regbank (
             registers[24] <= 32'h00000000; registers[25] <= 32'h00000000;  registers[26] <= 32'h00000000; registers[27] <= 32'h00000000;
             registers[28] <= 32'h00000000; registers[29] <= 32'h00000000;  registers[30] <= 32'h00000000; registers[31] <= 32'h00000000;
         end
-        else begin
-            if (write)
+        else begin                            
+            if (writeReg)                     // write to register only when writeReg is high    
                 registers[dr] <= write_data;
+            if (writeSP)
+                registers[31] <= write_dataSP;             // stack pointer is updated only when writeSP is high
         end
     end
 endmodule
