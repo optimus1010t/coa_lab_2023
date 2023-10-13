@@ -1,6 +1,6 @@
 module regbank (
     input wire clk;
-    input wire writeSP, readSP, writeReg, reset;
+    input wire writeSP, readSP, writeReg, reset;      // added reset to reset the entire reg bank
     input [4:0] sr1, sr2, dr; // source and destination register
     input [31:0] write_data, write_dataSP;                  // implemented as independent inputs for the 32 registers and then the sp
     output reg [31:0] read_data1, read_data2;
