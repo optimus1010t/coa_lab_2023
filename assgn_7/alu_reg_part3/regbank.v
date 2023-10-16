@@ -14,14 +14,13 @@ module regbank (
     end
     assign read_data2 = registers[sr2];
 
-    assign registers[0] = 32'b0;
-    
     // some default values set for the registers
     registers[1]=32'b1; registers[2]=32'b10; registers[3]=32'b11; registers[4]=32'b100; registers[5]=32'b101; registers[6]=32'b110; registers[7]=32'b111; registers[8]=32'b1000;
     registers[9]=32'b1001; registers[10]=32'b1010; registers[11]=32'b1011; registers[12]=32'b1100; registers[13]=32'b1101; registers[14]=32'b1110; registers[15]=32'b1111; registers[16]=32'b10000;
 
     always @(posedge clk)         // write always happens on posedge of the clock
     begin
+        registers[0] = 32'b0
         if (reset) begin 
             registers[0] <= 32'h00000000;  registers[1] <= 32'h00000000;   registers[2] <= 32'h00000000;  registers[3] <= 32'h00000000;
             registers[4] <= 32'h00000000;  registers[5] <= 32'h00000000;   registers[6] <= 32'h00000000;  registers[7] <= 32'h00000000;
