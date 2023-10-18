@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module tb;
 
     //inputs for alu
@@ -8,6 +10,12 @@ module tb;
 
     //inputs for regbank
     reg clk;
+    initial begin
+    clk = 0;
+    end
+    always begin 
+    # 5 clk = ~clk;
+    end
     reg writeSP, readSP, writeReg, reset;
     reg [4:0] sr1, sr2, dr;
     reg [31:0] write_data, write_dataSP;
@@ -26,38 +34,37 @@ module tb;
         #100
         in1=read_data1; in2=read_data2; shamt=read_data2[0]; func=0;
         #100
-        writeReg=1;
+        write_data=out; writeReg=1;
         #100
         writeReg=0;
         sr1=4; sr2=5; dr=6;
         #100
         in1=read_data1; in2=read_data2; shamt=read_data2[0]; func=1;
         #100
-        writeReg=1;
+        write_data=out; writeReg=1;
         #100
         writeReg=0;
         sr1=7; sr2=8; dr=9;
         #100
         in1=read_data1; in2=read_data2; shamt=read_data2[0]; func=2;
         #100
-        writeReg=1;
+        write_data=out; writeReg=1;
         #100
         writeReg=0;
         sr1=10; sr2=11; dr=12;
         #100
         in1=read_data1; in2=read_data2; shamt=read_data2[0]; func=3;
         #100
-        writeReg=1;
+        write_data=out; writeReg=1;
         #100
         writeReg=0;
         sr1=13; sr2=14; dr=15;
         #100
         in1=read_data1; in2=read_data2; shamt=read_data2[0]; func=4;
         #100
-        writeReg=1;
+        write_data=out; writeReg=1;
         #100
         writeReg=0;
-        #100
     end
 
 endmodule

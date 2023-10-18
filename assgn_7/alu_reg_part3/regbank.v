@@ -1,26 +1,30 @@
 module regbank (
-    input wire clk;
-    input wire writeSP, readSP, writeReg, reset;      // added reset to reset the entire reg bank
-    input [4:0] sr1, sr2, dr; // source and destination register
-    input [31:0] write_data, write_dataSP;                  // implemented as independent inputs for the 32 registers and then the sp
-    output reg [31:0] read_data1, read_data2;
-)
+    input wire clk,
+    input wire writeSP, readSP, writeReg, reset,      // added reset to reset the entire reg bank
+    input [4:0] sr1, sr2, dr, // source and destination register
+    input [31:0] write_data, write_dataSP,                  // implemented as independent inputs for the 32 registers and then the sp
+    output reg [31:0] read_data1, read_data2
+);
     reg [31:0] registers [31:0];                           // 32 registers; the register at address 31 is the stack pointer                                              
+    always @(*) begin
     if (readSP == 0) begin                                  // read ports are always updated based on the address of the source registers    
-        assign read_data1 = registers[sr1];                 // read_data1 is updated based on the address of the source register
+        read_data1 = registers[sr1];                 // read_data1 is updated based on the address of the source register
     end
     else begin
-        assign read_data1 = registers[31];                             // read_data1 is updated based on the stack pointer if readSP is high
+        read_data1 = registers[31];                             // read_data1 is updated based on the stack pointer if readSP is high
     end
-    assign read_data2 = registers[sr2];
+    read_data2 = registers[sr2];
+    end
 
     // some default values set for the registers
+    initial begin
     registers[1]=32'b1; registers[2]=32'b10; registers[3]=32'b11; registers[4]=32'b100; registers[5]=32'b101; registers[6]=32'b110; registers[7]=32'b111; registers[8]=32'b1000;
     registers[9]=32'b1001; registers[10]=32'b1010; registers[11]=32'b1011; registers[12]=32'b1100; registers[13]=32'b1101; registers[14]=32'b1110; registers[15]=32'b1111; registers[16]=32'b10000;
-
+    end
+    
     always @(posedge clk)         // write always happens on posedge of the clock
     begin
-        registers[0] = 32'b0
+        registers[0] = 32'b0;
         if (reset) begin 
             registers[0] <= 32'h00000000;  registers[1] <= 32'h00000000;   registers[2] <= 32'h00000000;  registers[3] <= 32'h00000000;
             registers[4] <= 32'h00000000;  registers[5] <= 32'h00000000;   registers[6] <= 32'h00000000;  registers[7] <= 32'h00000000;
