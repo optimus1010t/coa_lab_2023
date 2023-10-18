@@ -68,11 +68,16 @@ module top(
             write_data=alu_out;
             writeReg=1;
             state=3;
-            out=alu_out;
+            out=alu_out[15:0];
         end
         3:
         begin
             state=4;
+            out=alu_out[31:16];
+        end
+        4:
+        begin
+            state=5;
             out=destreg;
         end
         default:
