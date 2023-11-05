@@ -1,7 +1,7 @@
 module data_mem_mod(
     input wire clk,
     input wire memWrite, memRead, reset,      // added reset to reset the entire mem bank
-    input [31:0] sr,                           // source register
+    input [9:0] sr,                           // source register
     input [31:0] write_data,                  // data to write to register in memory bank
     output reg [31:0] read_data
 );
@@ -27,7 +27,7 @@ module data_mem_mod(
         end
         else begin                            
             if (memWrite)                     // write to register only when writeReg is high    
-                data_regs[sr[9:0]] <= write_data;
+                data_regs[sr] <= write_data;
         end
     end
 endmodule
@@ -35,7 +35,7 @@ endmodule
 module instr_mem_mod(
     input wire clk,
     input wire memWriteIM, memReadIM, reset,      // added reset to reset the entire mem bank
-    input [31:0] sr,                            // source register
+    input [9:0] sr,                            // source register
     input [31:0] write_data,                  // data to write to register in memory bank
     output reg [31:0] read_data
 );
@@ -58,7 +58,7 @@ module instr_mem_mod(
         end
         else begin                            
             if (memWrite)                     // write to register only when writeReg is high    
-                inst_regs[sr[9:0]] <= write_data;
+                inst_regs[sr] <= write_data;
         end
     end
 endmodule

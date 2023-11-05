@@ -68,23 +68,31 @@ module control_unit (                      // so input is the instruction itself
                 memReadIM <= 1;
             end
             // current instruction is in curr_instr
-            1: case(opcode)
+            1: begin
+                curr_state <= 2;
+                memReadIM <= 0;
+            end
+            2: case(opcode)
                 6'b000000: begin
-                    curr_state <= 2;                            
+                    curr_state <= 3;                            
                 end
             endcase
             
-            2: case(opcode)
-                6'b000000: begin
-                    curr_state <= 3;
-                    aluSource <= 1;
-                    spmux <= 0;
-                    aluOp <= 0;
-                end
-            endcase
             3: case(opcode)
                 6'b000000: begin
                     curr_state <= 4;
+                    aluSource <= 1;
+                    spmux <= 0;
+                    aluOp <= 0;
+                    memReg <= 0;
+                    moveReg <= 0;
+                    writeReg <= 1;
+                    regDest <= 1;
+                end
+            endcase
+            4: case(opcode)
+                6'b000000: begin
+                    curr_state <= 100;
                     memReg <= 0;
                     moveReg <= 0;
                     writeReg <= 1;
@@ -92,4 +100,7 @@ module control_unit (                      // so input is the instruction itself
                 end
             endcase
         endcase
+
+
+endmodule
 
