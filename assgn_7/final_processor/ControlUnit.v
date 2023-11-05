@@ -26,7 +26,7 @@ module control_unit (                      // so input is the instruction itself
     output reg memReg,
     output reg moveReg,
     output reg jump,
-    output reg branch,
+    output reg [1:0] branch,
     output reg retPC,
     output reg haltPC
 );
@@ -62,7 +62,7 @@ module control_unit (                      // so input is the instruction itself
     // ???? add the button press logic to initialise PC for now I am setting it to zero by default
 
     always @(posedge clk)
-        case(curr_state)
+        case(curr_state) // keep halt one all the time and change it to zero when you wnat to update PC, to remedy updation when you dont want
             0: begin
                 curr_state <= 1;
                 memReadIM <= 1;

@@ -15,26 +15,12 @@ module datapath (
     input memRead,
     input memWrite,
     input memReg,
-    input aluOp,moveReg, jump, branch, retPC, haltPC,
-
-    
-    input [5:0] ALUop,
-    input [1:0] PCControl,
-    input Call,
-    input [1:0] RegDst,                 //0 for rs, 1 for rt, 2 for rd
-    input ALUSrc1,                      //0 for ReadData1, 1 for ReadSP
-    input ALUSrc2,                      //0 for ReadData2, 1 for Immediate32bit
-    input RegWrite,                     //1 for Writing to Register, 0 othw
-    input SPWrite,                      //1 for Writing to SP, 0 othw
-    input [1:0] ZControl,               //Left Bit is for Zin and Right Bit is for Zout
-    input MemToOut,                     //0 for ReadDataMem, 1 for ALUResult
-    input PCUpdate,                     //0 for PC = PC + 4, 1 for address from data memory
-    output [5:0] opcode
+    input aluOp,moveReg, jump,, retPC, haltPC,
+    input [1:0] branch,
 );
 
-// wire [31:0] PCoutput;
-// wire [31:0] instruction;
-// wire [5:0] funct;
+wire [31:0] PCoutput;
+wire [31:0] PCinput;
 // wire [4:0] rs;
 // wire [4:0] rt;
 // wire [4:0] rd;
@@ -52,7 +38,7 @@ module datapath (
 // wire [31:0] sign_extended_imm_16;
 // wire [31:0] adder_input;
 // wire [31:0] adder_output;
-// wire [31:0] PCinput;
+
 wire [31:0] w_IM_out;             // instruction memory to mux with regDest
 wire [4:0] w_mA_RBdest;         // mux with regDest and regbankdest
 wire [31:0] PCoutput;
@@ -258,5 +244,13 @@ mux_2to1_32bit my_mL_haltPC (
     .in2(PCoutput),
     .sel(haltPC),
     .out(PCinput)
+);
+
+branching_mech my_BM(
+    .clk(clk),
+    .reset(0),                  // default to zero ???? might change later
+    .branch(branch),
+    .flags(alu_flags),
+    .branchf(branchf)
 );
 endmodule
