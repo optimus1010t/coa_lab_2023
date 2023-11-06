@@ -8,15 +8,17 @@ module datapath (
     // input memReadIM,
     // input memWriteIM,
     input regDest,
-    input writeSP, readSP, writeReg,
+    input writeSP, readSP, updateSP, writeReg,
     input aluSource,
-    input PM4,
+    input PM4,spmmux, 
     input retmem,
     input memRead,
     input memWrite,
     input memReg,
-    input aluOp,moveReg, jump,, retPC, haltPC,
+    input aluOp,moveReg, jump, retPC, haltPC, memReg,
     input [1:0] branch,
+    input [3:0] aluOp,
+    output reg [31:0] IM_out
 );
 
 wire [31:0] PCoutput;
@@ -75,6 +77,13 @@ begin
     treg_addH_mI <= w_addH_mI;
     treg_addJ_mJ <= w_addJ_mJ;
 end
+
+
+always @(*)
+begin
+    IM_out = w_IM_out;
+end
+
 PC my_PC (
     .clk(clk),
     .reset(0),                  // default to zero ???? might change later
