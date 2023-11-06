@@ -18,7 +18,7 @@ module control_unit (                      // so input is the instruction itself
     output reg spmux,
     output reg PM4,
     output reg retMem,
-    output reg aluSource,
+    output reg aluSource,                  // 1 is register, 0 if imm for second operand
     output reg memRead,
     output reg memWrite,
     output reg memReadIM,
@@ -65,40 +65,61 @@ module control_unit (                      // so input is the instruction itself
         case(curr_state) // keep halt one all the time and change it to zero when you wnat to update PC, to remedy updation when you dont want
             0: begin
                 curr_state <= 1;
-                memReadIM <= 1;
+                PCUpdate <= 1;
             end
             // current instruction is in curr_instr
             1: begin
                 curr_state <= 2;
-                memReadIM <= 0;
+                PCUpdate <= 0;
             end
             2: case(opcode)
                 6'b000000: begin
-                    curr_state <= 3;                            
+                    curr_state <= 100;
+                    aluSource <= 1;
+                    spmux <= 0;
+                    aluOp <= funct[3:0];
+                    curr_state <= 4;
+                    memReg <= 0;
+                    moveReg <= 0;
+                    writeReg <= 1;
+                    regDest <= 1;                           
                 end
             endcase
             
             3: case(opcode)
                 6'b000000: begin
-                    curr_state <= 4;
-                    aluSource <= 1;
-                    spmux <= 0;
-                    aluOp <= 0;
-                    memReg <= 0;
-                    moveReg <= 0;
-                    writeReg <= 1;
-                    regDest <= 1;
+                    
                 end
             endcase
+
             4: case(opcode)
-                6'b000000: begin
-                    curr_state <= 100;
-                    memReg <= 0;
-                    moveReg <= 0;
-                    writeReg <= 1;
-                    regDest <= 1;
+                6'b000000: begin                    
                 end
             endcase
+
+            100: begin
+                curr_state <= 0;
+                regDest <= 0;
+                writeSP <= 0;
+                readSP <= 0;
+                writeReg <= 0;
+                updateSP <= 0;
+                aluOp <= 0;
+                spmux <= 0;
+                PM4 <= 0;
+                retMem <= 0;
+                aluSource <= 0;
+                memRead <= 0;
+                memWrite <= 0;
+                memReadIM <= 0;
+                memWriteIM <= 0;
+                memReg <= 0;
+                moveReg <= 0;
+                jump <= 0;
+                branch <= 0;
+                retPC <= 0;
+                haltPC <= 0;
+            end
         endcase
 
 

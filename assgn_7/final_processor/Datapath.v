@@ -5,8 +5,8 @@
 module datapath (
     input clk,
     input PCUpdate,
-    input memReadIM,
-    input memWriteIM,
+    // input memReadIM,
+    // input memWriteIM,
     input regDest,
     input writeSP, readSP, writeReg,
     input aluSource,
@@ -85,8 +85,8 @@ PC my_PC (
 
 instr_mem_mod my_IM (
     .clk(clk),
-    .memWriteIM(memWriteIM),
-    .memReadIM(memReadIM),
+    .memWriteIM(0),
+    .memReadIM(1),
     .reset(0),                  // default to zero ???? might change later
     .sr(PCoutput),
     .write_data(0),
@@ -121,15 +121,15 @@ mux_2to1_5bit my_mA_regDest (
 );
 
 mux_2to1_32bit my_mB_PM4 (
-    .in1(32b'00000000000000000000000000000100),
-    .in2(32b'11111111111111111111111111111100),
+    .in1(32b'00000000000000000000000000000001),         // +1 or -1 in our case
+    .in2(32b'11111111111111111111111111111111),
     .sel(PM4),
     .out(w_mB_mD)
 );
 
 mux_2to1_5bit my_mC_aluSource (
-    .in1(readData2),
-    .in2(treg_signD_mC),
+    .in2(readData2),
+    .in1(treg_signD_mC),
     .sel(aluSource),
     .out(w_mC_mD)
 );
@@ -153,13 +153,13 @@ alu my_ALU (
 
 adder add_K(
     .in1(PCoutput),
-    .in2(32b'00000000000000000000000000000100),
+    .in2(32b'00000000000000000000000000000001),         // +1 in our case
     .out(w_addK_addH)
 );
 
 mux_2to1_32bit my_mF_retmem (
-    .in1(treg_addK_mF3),
-    .in2(alu_out),
+    .in2(treg_addK_mF3),
+    .in1(alu_out),
     .sel(regmem),
     .out(w_mF_DM)
 );
@@ -182,8 +182,8 @@ data_mem_mod DM(
 );
 
 mux_2to1_32bit my_mG_memReg (
-    .in1(w_DM_out),
-    .in2(treg_aluout2),
+    .in2(w_DM_out),
+    .in1(alu_out),
     .sel(memReg),
     .out(w_mG_mH)
 );
