@@ -21,26 +21,8 @@ module datapath (
 
 wire [31:0] PCoutput;
 wire [31:0] PCinput;
-// wire [4:0] rs;
-// wire [4:0] rt;
-// wire [4:0] rd;
-// wire [15:0] immediate;
-// wire [31:0] readData1;
-// wire [31:0] readData2;
-// wire [31:0] readDataSP;
-// wire [4:0] writeRegister;
-// wire [31:0] ALUinput1;
-// wire [31:0] ALUinput2;
-// wire [5:0] ALUfunct;
-// wire [31:0] ALUResult;
-// wire [31:0] ZOutput;
-// wire [31:0] mux3output;
-// wire [31:0] sign_extended_imm_16;
-// wire [31:0] adder_input;
-// wire [31:0] adder_output;
-
-wire [31:0] w_IM_out;             // instruction memory to mux with regDest
-wire [4:0] w_mA_RBdest;         // mux with regDest and regbankdest
+wire [31:0] w_IM_out;               // instruction memory to mux with regDest
+wire [4:0] w_mA_RBdest;             // mux with regDest and regbankdest
 wire [31:0] PCoutput;
 wire [31:0] readData1;
 wire [31:0] readData2;
@@ -59,8 +41,8 @@ wire [31:0] w_signI_mJ,w_mJ_mK;
 wire branchf;
 
 
-assign w_addk_mF = w_addK_addH;   // output of adder K to mux F for SP
-assign w_mB_addN = w_mB_mD;     // output of mux B to adder N for SP 
+assign w_addk_mF = w_addK_addH;     // output of adder K to mux F for SP
+assign w_mB_addN = w_mB_mD;         // output of mux B to adder N for SP 
 
 // muxes are named as mux_<control_signal_driving_them> and each of them is a 2-to-1 mux
 // wires are named as w_<source>_<dest>
@@ -68,7 +50,12 @@ assign w_mB_addN = w_mB_mD;     // output of mux B to adder N for SP
 reg [31:0] treg_aluout1, treg_aluout2;
 reg [31:0] treg_readData1_mH, treg_readData1_mH2;
 reg [31:0] treg_PC_addH, treg_PC_addH2;
-reg [31:0] treg_mJ_mK, treg_mJ_mK2, treg_mJ_mK3;
+reg [31:0] treg_mJ_mK, treg_mJ_mK2;
+reg [31:0] treg_signD_mC;
+reg [31:0] treg_addK_mF1, treg_addK_mF2, treg_addK_mF3;
+reg [31:0] treg_addK_addH1, treg_addK_addH2;
+reg [31:0] treg_addH_mI;
+reg [31:0] treg_addJ_mJ;
 always @(posedge clk)
 begin
     treg_aluout1 <= alu_out;
@@ -79,7 +66,14 @@ begin
     treg_PC_addH2 <= treg_PC_addH;
     treg_mJ_mK <= w_mJ_mK;
     treg_mJ_mK2 <= treg_mJ_mK;
-    treg_mJ_mK3 <= treg_mJ_mK2;
+    treg_signD_mC <= sign_extended_imm_16;
+    treg_addK_mF1 <= w_addK_mF;
+    treg_addK_mF2 <= treg_addK_mF1;
+    treg_addK_mF3 <= treg_addK_mF2;
+    treg_addK_addH1 <= w_addK_addH;
+    treg_addK_addH2 <= treg_addK_addH1;
+    treg_addH_mI <= w_addH_mI;
+    treg_addJ_mJ <= w_addJ_mJ;
 end
 PC my_PC (
     .clk(clk),
@@ -135,7 +129,7 @@ mux_2to1_32bit my_mB_PM4 (
 
 mux_2to1_5bit my_mC_aluSource (
     .in1(readData2),
-    .in2(sign_extended_imm_16),
+    .in2(treg_signD_mC),
     .sel(aluSource),
     .out(w_mC_mD)
 );
@@ -164,14 +158,14 @@ adder add_K(
 );
 
 mux_2to1_32bit my_mF_retmem (
-    .in1(w_addK_mF),
+    .in1(treg_addK_mF3),
     .in2(alu_out),
     .sel(regmem),
     .out(w_mF_DM)
 );
 
 mux_2to1_32bit my_mE_updateSP (
-    .in2(w_addK_mF),
+    .in2(treg_addK_mF3),
     .in1(readData2),
     .sel(updateSP),
     .out(w_mE_DM)
@@ -207,33 +201,33 @@ sign_extend_28 my_SE_26_I (
 );
 
 adder add_H(
-    .in1(treg_readData1_mH2),
-    .in2(w_addK_addH),
+    .in1(sign_extended_imm_16),
+    .in2(treg_addK_addH2),
     .out(w_addH_mI)
 );
 
 mux_2to1_32bit my_mI_branchf (
-    .in1(w_addH_mI),
-    .in2(PCoutput),
-    .sel(branchf),                     // write teh code for branching mechanism????
+    .in1(treg_addK_mI3),
+    .in2(treg_addH_mI),
+    .sel(branchf),                     
     .out(w_mI_mJ)
 );
 
 adder add_J(
-    .in1(PCoutput),
+    .in1(treg_addK_addH2),
     .in2(w_signI_mJ),
     .out(w_addJ_mJ)
 );
 
 mux_2to1_32bit my_mJ_jump (
     .in1(w_mI_mJ),
-    .in2(w_addJ_mJ),
+    .in2(treg_addJ_mJ),
     .sel(jump),
     .out(w_mJ_mK)
 );
 
 mux_2to1_32bit my_mK_retPC (
-    .in1(treg_mJ_mK3),
+    .in1(treg_mJ_mK2),
     .in2(w_mG_mH),
     .sel(retPC),
     .out(w_mK_mL)
