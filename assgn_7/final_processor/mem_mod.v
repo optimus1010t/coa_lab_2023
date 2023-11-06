@@ -8,7 +8,7 @@ module data_mem_mod(
     reg [31:0] data_regs [1023:0];            // 1024 registers that act as memory of width 32 bits                                            
 
     initial begin
-        $readmemb("regs_init_file_data.data",data_regs); // The external file that is used to initialize the RAM needs to be in bit vector form. External files in integer or hex format will not work.
+        //$readmemb("regs_init_file_data.data",data_regs); // The external file that is used to initialize the RAM needs to be in bit vector form. External files in integer or hex format will not work.
     end                                       // The $readmemb and $readmemh system tasks can be used to initialize block memories. For more information, see:
                                               // Initializing RAM From an External File Coding Examples
                                               // Use $readmemb for binary and $readmemh for hexadecimal representation. To avoid the possible difference between XST and simulator behavior, Xilinx® recommends that you use index parameters in these system tasks. See the following coding example.
@@ -42,7 +42,8 @@ module instr_mem_mod(
     reg [31:0] inst_regs [1023:0];            // 1024 registers that act as memory of width 32 bits                                            
 
     initial begin
-        $readmemb("regs_init_file_instr.data",inst_regs);
+        //$readmemb("regs_init_file_instr.data",inst_regs);
+        inst_regs[0]=32'b000000 00100 00001 00010 00000 000000;
     end
     always @(*) begin
     if (memRead) begin                        // read ports are always updated based on the address of the source registers    

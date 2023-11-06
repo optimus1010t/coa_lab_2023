@@ -3,8 +3,8 @@
 
 module processor(
     input clk,
-    input INT,
-    output [15:0] finalout
+    // input INT,
+    output [31:0] finalout
 );
 
 wire [5:0] opcode;
