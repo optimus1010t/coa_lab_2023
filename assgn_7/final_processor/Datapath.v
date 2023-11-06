@@ -155,7 +155,7 @@ alu my_ALU (
     .input1(readData1),
     .input2(w_mD_ALU),
     .shamt(w_IM_out[25]),
-    .func(alu_Op),        
+    .func(aluOp),        
     .out(alu_out),
     .flags(alu_flags)
 );
