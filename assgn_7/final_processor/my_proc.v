@@ -1,5 +1,5 @@
-`include "ControlUnit.v"
-`include "Datapath.v"
+// `include "ControlUnit.v"
+// `include "Datapath.v"
 
 module processor(
     input clk,
@@ -15,7 +15,6 @@ wire [3:0] aluOp;
 wire PCUpdate;                   // Added this to know when to update the PC ???? dont know whether this is needed
 wire regDest;
 wire writeSP;
-wire readSP;
 wire readSP;
 wire writeReg;
 wire updateSP;

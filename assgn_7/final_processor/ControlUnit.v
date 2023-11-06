@@ -1,4 +1,4 @@
-`include "Datapath.v"
+// `include "Datapath.v"
 module control_unit (                      // so input is the instruction itself and outputs are the control signals are 
     input wire [5:0] opcode,
     // input wire [4:0] rs,
@@ -10,7 +10,6 @@ module control_unit (                      // so input is the instruction itself
     output reg PCUpdate,                   // Added this to know when to update the PC ???? dont know whether this is needed
     output reg regDest,
     output reg writeSP,
-    output reg readSP,
     output reg readSP,
     output reg writeReg,
     output reg updateSP,
@@ -49,8 +48,8 @@ module control_unit (                      // so input is the instruction itself
             aluSource <= 0;
             memRead <= 0;
             memWrite <= 0;
-            memReadIM <= 0;
-            memWriteIM <= 0;
+            // memReadIM <= 0;
+            // memWriteIM <= 0;
             memReg <= 0;
             moveReg <= 0;
             jump <= 0;
@@ -111,8 +110,8 @@ module control_unit (                      // so input is the instruction itself
                 aluSource <= 0;
                 memRead <= 0;
                 memWrite <= 0;
-                memReadIM <= 0;
-                memWriteIM <= 0;
+                // memReadIM <= 0;
+                // memWriteIM <= 0;
                 memReg <= 0;
                 moveReg <= 0;
                 jump <= 0;

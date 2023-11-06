@@ -15,7 +15,7 @@ module datapath (
     input memRead,
     input memWrite,
     input memReg,
-    input aluOp,moveReg, jump, retPC, haltPC, memReg,
+    input moveReg, jump, retPC, haltPC,
     input [1:0] branch,
     input [3:0] aluOp,
     output reg [31:0] IM_out
@@ -25,12 +25,12 @@ wire [31:0] PCoutput;
 wire [31:0] PCinput;
 wire [31:0] w_IM_out;               // instruction memory to mux with regDest
 wire [4:0] w_mA_RBdest;             // mux with regDest and regbankdest
-wire [31:0] PCoutput;
 wire [31:0] readData1;
 wire [31:0] readData2;
 wire [31:0] w_sign_mC;
 wire [31:0] w_mH_RB;
 wire [31:0] w_mB_addN;
+wire [31:0] w_mB_mD;
 wire [31:0] sign_extended_imm_16;
 wire [31:0] w_mC_mD;
 wire [31:0] w_mD_ALU;
@@ -86,7 +86,7 @@ end
 
 PC my_PC (
     .clk(clk),
-    .reset(0),                  // default to zero ???? might change later
+    .reset(1'b0),                  // default to zero ???? might change later
     .PCinput(PCinput),
     .PCUpdate(PCUpdate),
     .PCoutput(PCoutput)
@@ -94,9 +94,9 @@ PC my_PC (
 
 instr_mem_mod my_IM (
     .clk(clk),
-    .memWriteIM(0),
-    .memReadIM(1),
-    .reset(0),                  // default to zero ???? might change later
+    .memWriteIM(1'b0),
+    .memReadIM(1'b1),
+    .reset(1'b0),                  // default to zero ???? might change later
     .sr(PCoutput),
     .write_data(0),
     .read_data(w_IM_out)               // default to zero ???? might change later    
@@ -104,12 +104,12 @@ instr_mem_mod my_IM (
 
 regbank my_RB (
     .clk(clk),
-    .reset(0),                  // default to zero ???? might change later
+    .reset(1'b0),                  // default to zero ???? might change later
     .writeSP(writeSP),
     .readSP(readSP),
     .writeReg(writeReg),
-    .sr1(w_IM_out[6:10]),
-    .sr2(w_IM_out[11:15]),
+    .sr1(w_IM_out[10:6]),
+    .sr2(w_IM_out[15:11]),
     .dr(w_mA_RBdest),
     .write_data(w_mH_RB),             // default to zero ???? might change later
     .write_dataSP(0),           // default to zero ???? might change later
@@ -118,20 +118,20 @@ regbank my_RB (
 );
 
 sign_extend_16 my_SE_16_D (
-    .in(w_IM_out[16:31]),
+    .in(w_IM_out[31:16]),
     .out(sign_extended_imm_16)
 );
 
 mux_2to1_5bit my_mA_regDest (
-    .in1(w_IM_out[11:15]),
-    .in2(w_IM_out[16:20]),
+    .in1(w_IM_out[15:11]),
+    .in2(w_IM_out[20:16]),
     .sel(regDest),
     .out(w_mA_RBdest)
 );
 
 mux_2to1_32bit my_mB_PM4 (
-    .in1(32b'00000000000000000000000000000001),         // +1 or -1 in our case
-    .in2(32b'11111111111111111111111111111111),
+    .in1(32'b00000000000000000000000000000001),         // +1 or -1 in our case
+    .in2(32'b11111111111111111111111111111111),
     .sel(PM4),
     .out(w_mB_mD)
 );
@@ -154,7 +154,7 @@ mux_2to1_32bit my_mD_spmux (
 alu my_ALU (
     .input1(readData1),
     .input2(w_mD_ALU),
-    .shamt(w_IM_out[25])
+    .shamt(w_IM_out[25]),
     .func(alu_Op),        
     .out(alu_out),
     .flags(alu_flags)
@@ -162,7 +162,7 @@ alu my_ALU (
 
 adder add_K(
     .in1(PCoutput),
-    .in2(32b'00000000000000000000000000000001),         // +1 in our case
+    .in2(32'b00000000000000000000000000000001),         // +1 in our case
     .out(w_addK_addH)
 );
 
@@ -197,15 +197,15 @@ mux_2to1_32bit my_mG_memReg (
     .out(w_mG_mH)
 );
 
-mux2to1_32bit my_mH_moveReg (
+mux_2to1_32bit my_mH_moveReg (
     .in1(w_mG_mH),
     .in2(treg_readData1_mH2),
     .sel(moveReg),
     .out(w_mH_RB)
 );
 
-sign_extend_28 my_SE_26_I (
-    .in(w_IM_out[6:31]),
+sign_extend_26 my_SE_26_I (
+    .in(w_IM_out[31:6]),
     .out(w_signI_mJ)
 );
 

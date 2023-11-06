@@ -3,7 +3,6 @@ module adder (
     input [31:0] in2,
     output [31:0] out
 );
-    always @(*) begin
-        out = in1 + in2;
-    end
+
+    assign out = in1 + in2;
 endmodule

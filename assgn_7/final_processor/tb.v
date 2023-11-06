@@ -2,7 +2,7 @@
 
 module tb();
     reg clk;
-    reg [31:0] out;
+    wire [31:0] out;
     initial begin
         clk = 0;
     end
@@ -11,4 +11,11 @@ module tb();
         .clk(clk),
         .finalout(out)
     );
+
+    initial begin
+        $dumpfile("dump.vcd");
+        $dumpvars(0, tb);
+        #100000
+        $finish;
+    end
 endmodule

@@ -1,11 +1,11 @@
 module PC(
     input clk,
     input reset,
-    input [9:0] PCinput,
+    input [31:0] PCinput,
     input PCUpdate,
-    output [9:0] PCoutput
+    output [31:0] PCoutput
 );
-    reg [9:0] PC;
+    reg [31:0] PC;
     initial begin
         PC = 0;
     end

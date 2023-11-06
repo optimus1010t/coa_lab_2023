@@ -43,10 +43,10 @@ module instr_mem_mod(
 
     initial begin
         //$readmemb("regs_init_file_instr.data",inst_regs);
-        inst_regs[0]=32'b000000 00100 00001 00010 00000 000000;
+        inst_regs[0]=32'b00000000100000010001000000000000;
     end
     always @(*) begin
-    if (memRead) begin                        // read ports are always updated based on the address of the source registers    
+    if (memReadIM) begin                        // read ports are always updated based on the address of the source registers    
         read_data = inst_regs[sr[9:0]];            // read_data1 is updated based on the address of the source register
     end
     end
@@ -58,7 +58,7 @@ module instr_mem_mod(
             // setting everything to zero ???? need to update
         end
         else begin                            
-            if (memWrite)                     // write to register only when writeReg is high    
+            if (memWriteIM)                     // write to register only when writeReg is high    
                 inst_regs[sr[9:0]] <= write_data;
         end
     end
