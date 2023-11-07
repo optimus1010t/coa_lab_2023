@@ -26,20 +26,20 @@ module regbank (
     begin
         registers[0] = 32'b0;
         if (reset) begin 
-            registers[0] <= 32'h00000000;  registers[1] <= 32'h00000000;   registers[2] <= 32'h00000000;  registers[3] <= 32'h00000000;
-            registers[4] <= 32'h00000000;  registers[5] <= 32'h00000000;   registers[6] <= 32'h00000000;  registers[7] <= 32'h00000000;
-            registers[8] <= 32'h00000000;  registers[9] <= 32'h00000000;   registers[10] <= 32'h00000000; registers[11] <= 32'h00000000;
-            registers[12] <= 32'h00000000; registers[13] <= 32'h00000000;  registers[14] <= 32'h00000000; registers[15] <= 32'h00000000;
-            registers[16] <= 32'h00000000; registers[17] <= 32'h00000000;  registers[18] <= 32'h00000000; registers[19] <= 32'h00000000;
-            registers[20] <= 32'h00000000; registers[21] <= 32'h00000000;  registers[22] <= 32'h00000000; registers[23] <= 32'h00000000;
-            registers[24] <= 32'h00000000; registers[25] <= 32'h00000000;  registers[26] <= 32'h00000000; registers[27] <= 32'h00000000;
-            registers[28] <= 32'h00000000; registers[29] <= 32'h00000000;  registers[30] <= 32'h00000000; registers[31] <= 32'h00000000;
+            registers[0] = 32'h00000000;  registers[1] = 32'h00000000;   registers[2] = 32'h00000000;  registers[3] = 32'h00000000;
+            registers[4] = 32'h00000000;  registers[5] = 32'h00000000;   registers[6] = 32'h00000000;  registers[7] = 32'h00000000;
+            registers[8] = 32'h00000000;  registers[9] = 32'h00000000;   registers[10] = 32'h00000000; registers[11] = 32'h00000000;
+            registers[12] = 32'h00000000; registers[13] = 32'h00000000;  registers[14] = 32'h00000000; registers[15] = 32'h00000000;
+            registers[16] = 32'h00000000; registers[17] = 32'h00000000;  registers[18] = 32'h00000000; registers[19] = 32'h00000000;
+            registers[20] = 32'h00000000; registers[21] = 32'h00000000;  registers[22] = 32'h00000000; registers[23] = 32'h00000000;
+            registers[24] = 32'h00000000; registers[25] = 32'h00000000;  registers[26] = 32'h00000000; registers[27] = 32'h00000000;
+            registers[28] = 32'h00000000; registers[29] = 32'h00000000;  registers[30] = 32'h00000000; registers[31] = 32'h00000000;
         end
         else begin                            
             if (writeReg)                     // write to register only when writeReg is high    
-                registers[dr] <= write_data;
+                registers[dr] = write_data;
             if (writeSP)
-                registers[31] <= write_dataSP;             // stack pointer is updated only when writeSP is high
+                registers[31] = write_dataSP;             // stack pointer is updated only when writeSP is high
         end
     end
 endmodule

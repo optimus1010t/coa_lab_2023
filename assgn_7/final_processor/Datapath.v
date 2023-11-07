@@ -5,8 +5,6 @@
 module datapath (
     input clk,
     input PCUpdate,
-    // input memReadIM,
-    // input memWriteIM,
     input regDest,
     input writeSP, readSP, updateSP, writeReg,
     input aluSource,
@@ -14,7 +12,7 @@ module datapath (
     input retmem,
     input memRead,
     input memWrite,
-    input memReg,
+    input memReg, spmux,
     input moveReg, jump, retPC, haltPC,
     input [1:0] branch,
     input [3:0] aluOp,
@@ -39,11 +37,11 @@ wire [31:0] alu_out;
 wire [31:0] w_addK_addH;
 wire [31:0] w_addK_mF;
 wire [31:0] w_DM_out;
-wire [31:0] w_signI_mJ,w_mJ_mK;
+wire [31:0] w_mG_mH;
+wire [31:0] w_signI_mJ,w_mJ_mK, w_mK_mL, w_mI_mJ;
 wire branchf;
 
 
-assign w_addk_mF = w_addK_addH;     // output of adder K to mux F for SP
 assign w_mB_addN = w_mB_mD;         // output of mux B to adder N for SP 
 
 // muxes are named as mux_<control_signal_driving_them> and each of them is a 2-to-1 mux
@@ -69,7 +67,7 @@ begin
     treg_mJ_mK <= w_mJ_mK;
     treg_mJ_mK2 <= treg_mJ_mK;
     treg_signD_mC <= sign_extended_imm_16;
-    treg_addK_mF1 <= w_addK_mF;
+    treg_addK_mF1 <= w_addK_addH;
     treg_addK_mF2 <= treg_addK_mF1;
     treg_addK_mF3 <= treg_addK_mF2;
     treg_addK_addH1 <= w_addK_addH;
@@ -78,6 +76,10 @@ begin
     treg_addJ_mJ <= w_addJ_mJ;
 end
 
+initial
+begin
+    $dumpvars(0, treg_aluout1, treg_aluout2, treg_readData1_mH, treg_readData1_mH2, treg_PC_addH, treg_PC_addH2, treg_mJ_mK, treg_mJ_mK2, treg_signD_mC, treg_addK_mF1, treg_addK_mF2, treg_addK_mF3, treg_addK_addH1, treg_addK_addH2, treg_addH_mI, treg_addJ_mJ);
+end
 
 always @(*)
 begin
@@ -98,8 +100,8 @@ instr_mem_mod my_IM (
     .memReadIM(1'b1),
     .reset(1'b0),                  // default to zero ???? might change later
     .sr(PCoutput),
-    .write_data(0),
-    .read_data(w_IM_out)               // default to zero ???? might change later    
+    .write_data(32'b0),
+    .read_data(w_IM_out)           // default to zero ???? might change later    
 );
 
 regbank my_RB (
@@ -108,11 +110,11 @@ regbank my_RB (
     .writeSP(writeSP),
     .readSP(readSP),
     .writeReg(writeReg),
-    .sr1(w_IM_out[10:6]),
-    .sr2(w_IM_out[15:11]),
+    .sr1(w_IM_out[25:21]),
+    .sr2(w_IM_out[20:16]),
     .dr(w_mA_RBdest),
-    .write_data(w_mH_RB),             // default to zero ???? might change later
-    .write_dataSP(0),           // default to zero ???? might change later
+    .write_data(w_mH_RB),           // default to zero ???? might change later
+    .write_dataSP(0),               // default to zero ???? might change later
     .read_data1(readData1),
     .read_data2(readData2)
 );
@@ -123,8 +125,8 @@ sign_extend_16 my_SE_16_D (
 );
 
 mux_2to1_5bit my_mA_regDest (
-    .in1(w_IM_out[15:11]),
-    .in2(w_IM_out[20:16]),
+    .in1(w_IM_out[20:16]),
+    .in2(w_IM_out[15:11]),
     .sel(regDest),
     .out(w_mA_RBdest)
 );
@@ -192,7 +194,7 @@ data_mem_mod DM(
 
 mux_2to1_32bit my_mG_memReg (
     .in2(w_DM_out),
-    .in1(alu_out),
+    .in1(treg_aluout2),
     .sel(memReg),
     .out(w_mG_mH)
 );
@@ -205,7 +207,7 @@ mux_2to1_32bit my_mH_moveReg (
 );
 
 sign_extend_26 my_SE_26_I (
-    .in(w_IM_out[31:6]),
+    .in(w_IM_out[25:0]),
     .out(w_signI_mJ)
 );
 
@@ -216,7 +218,7 @@ adder add_H(
 );
 
 mux_2to1_32bit my_mI_branchf (
-    .in1(treg_addK_mI3),
+    .in1(treg_addK_mF3),
     .in2(treg_addH_mI),
     .sel(branchf),                     
     .out(w_mI_mJ)

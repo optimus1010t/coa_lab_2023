@@ -6,7 +6,7 @@ module pos_edge_det (input sig, // Input signal for which positive edge has to b
 
    // This always block ensures that sig_dly is exactly 1 clock behind sig
    always @ (posedge clk) begin
-      sig_dly <= sig;
+      sig_dly = sig;
    end
 
    // Combinational logic where sig is AND with delayed, inverted version of sig

@@ -65,7 +65,7 @@ datapath dete(
     .writeReg(writeReg),
     .aluSource(aluSource),
     .PM4(PM4),
-    .spmmux(spmux), 
+    .spmux(spmux), 
     .retmem(retmem),
     .memRead(memRead),
     .memWrite(memWrite),

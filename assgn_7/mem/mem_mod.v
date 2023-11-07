@@ -27,7 +27,7 @@ module data_mem_mod(
         end
         else begin                            
             if (memWrite)                     // write to register only when writeReg is high    
-                data_regs[sr[9:0]] <= write_data;
+                data_regs[sr[9:0]] = write_data;
         end
     end
 endmodule
@@ -58,7 +58,7 @@ module instr_mem_mod(
         end
         else begin                            
             if (memWrite)                     // write to register only when writeReg is high    
-                inst_regs[sr[9:0]] <= write_data;
+                inst_regs[sr[9:0]] = write_data;
         end
     end
 endmodule

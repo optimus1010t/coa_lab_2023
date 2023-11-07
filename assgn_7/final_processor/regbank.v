@@ -8,23 +8,24 @@ module regbank (
     reg [31:0] registers [31:0];                           // 32 registers; the register at address 31 is the stack pointer                                              
     always @(*) begin
     if (readSP == 0) begin                                  // read ports are always updated based on the address of the source registers    
-        read_data1 = registers[sr1];                 // read_data1 is updated based on the address of the source register
+        read_data1 <= registers[sr1];                 // read_data1 is updated based on the address of the source register
     end
     else begin
-        read_data1 = registers[31];                             // read_data1 is updated based on the stack pointer if readSP is high
+        read_data1 <= registers[31];                             // read_data1 is updated based on the stack pointer if readSP is high
     end
-    read_data2 = registers[sr2];
+    read_data2 <= registers[sr2];
     end
 
     // some default values set for the registers
     initial begin
-    registers[1]=32'b1; registers[2]=32'b10; registers[3]=32'b11; registers[4]=32'b100; registers[5]=32'b101; registers[6]=32'b110; registers[7]=32'b111; registers[8]=32'b1000;
-    registers[9]=32'b1001; registers[10]=32'b1010; registers[11]=32'b1011; registers[12]=32'b1100; registers[13]=32'b1101; registers[14]=32'b1110; registers[15]=32'b1111; registers[16]=32'b10000;
+    registers[1]<=32'b1; registers[2]<=32'b10; registers[3]<=32'b11; registers[4]<=32'b100; registers[5]<=32'b101; registers[6]<=32'b110; registers[7]<=32'b111; registers[8]<=32'b1000;
+    registers[9]<=32'b1001; registers[10]<=32'b1010; registers[11]<=32'b1011; registers[12]<=32'b1100; registers[13]<=32'b1101; registers[14]<=32'b1110; registers[15]<=32'b1111; registers[16]<=32'b10000;
+    $dumpvars(0, registers[0], registers[1], registers[2], registers[3], registers[4], registers[5], registers[6], registers[7], registers[8], registers[9], registers[10], registers[11], registers[12], registers[13], registers[14], registers[15], registers[16], registers[17], registers[18], registers[19], registers[20], registers[21], registers[22], registers[23], registers[24], registers[25], registers[26], registers[27], registers[28], registers[29], registers[30], registers[31]);
     end
     
-    always @(posedge clk)         // write always happens on posedge of the clock
+    always @(negedge clk)         // write always happens on posedge of the clock
     begin
-        registers[0] = 32'b0;
+        registers[0] <= 32'b0;
         if (reset) begin 
             registers[0] <= 32'h00000000;  registers[1] <= 32'h00000000;   registers[2] <= 32'h00000000;  registers[3] <= 32'h00000000;
             registers[4] <= 32'h00000000;  registers[5] <= 32'h00000000;   registers[6] <= 32'h00000000;  registers[7] <= 32'h00000000;
