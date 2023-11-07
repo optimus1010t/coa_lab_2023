@@ -20,6 +20,7 @@ module regbank (
     initial begin
     registers[1]<=32'b1; registers[2]<=32'b10; registers[3]<=32'b11; registers[4]<=32'b100; registers[5]<=32'b101; registers[6]<=32'b110; registers[7]<=32'b111; registers[8]<=32'b1000;
     registers[9]<=32'b1001; registers[10]<=32'b1010; registers[11]<=32'b1011; registers[12]<=32'b1100; registers[13]<=32'b1101; registers[14]<=32'b1110; registers[15]<=32'b1111; registers[16]<=32'b10000;
+    registers[31]<=32'b1111111111;
     $dumpvars(0, registers[0], registers[1], registers[2], registers[3], registers[4], registers[5], registers[6], registers[7], registers[8], registers[9], registers[10], registers[11], registers[12], registers[13], registers[14], registers[15], registers[16], registers[17], registers[18], registers[19], registers[20], registers[21], registers[22], registers[23], registers[24], registers[25], registers[26], registers[27], registers[28], registers[29], registers[30], registers[31]);
     end
     

@@ -7,7 +7,7 @@ module PC(
 );
     reg [31:0] PC;
     initial begin
-        PC = 0;
+        PC = 4;
     end
     initial begin
         $dumpvars(0,PC);
