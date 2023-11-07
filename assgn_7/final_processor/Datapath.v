@@ -9,7 +9,7 @@ module datapath (
     input writeSP, readSP, updateSP, writeReg,
     input aluSource,
     input PM4,spmmux, 
-    input retmem,
+    input retMem,
     input memRead,
     input memWrite,
     input memReg, spmux,
@@ -36,9 +36,9 @@ wire [2:0] alu_flags;
 wire [31:0] alu_out;
 wire [31:0] w_addK_addH;
 wire [31:0] w_addK_mF;
-wire [31:0] w_DM_out;
+wire [31:0] w_DM_out,w_mF_DM;
 wire [31:0] w_mG_mH;
-wire [31:0] w_signI_mJ,w_mJ_mK, w_mK_mL, w_mI_mJ;
+wire [31:0] w_signI_mJ,w_mJ_mK, w_mK_mL, w_mI_mJ,w_mE_DM;
 wire branchf;
 
 
@@ -120,7 +120,7 @@ regbank my_RB (
 );
 
 sign_extend_16 my_SE_16_D (
-    .in(w_IM_out[31:16]),
+    .in(w_IM_out[15:0]),
     .out(sign_extended_imm_16)
 );
 
@@ -168,10 +168,10 @@ adder add_K(
     .out(w_addK_addH)
 );
 
-mux_2to1_32bit my_mF_retmem (
+mux_2to1_32bit my_mF_retMem (
     .in2(treg_addK_mF3),
     .in1(alu_out),
-    .sel(regmem),
+    .sel(retMem),
     .out(w_mF_DM)
 );
 

@@ -66,8 +66,7 @@ module control_unit (                      // so input is the instruction itself
                 curr_state <= 2;
             end
             2: case(opcode)
-                6'b000000: begin
-                    
+                6'b000000: begin                    
                     aluSource = 1;
                     spmux = 0;
                     aluOp = funct[3:0];
@@ -75,11 +74,118 @@ module control_unit (                      // so input is the instruction itself
                     jump = 0;   
                     curr_state <= 3;                        
                 end
+                6'b000001:begin
+                    aluSource = 0;
+                    spmux = 0;
+                    aluOp = 0;
+                    branch = 0;
+                    jump = 0;
+                    curr_state <= 3;
+                end
+                6'b000010: begin
+                    aluSource = 0;
+                    spmux = 0;
+                    aluOp = 1;
+                    branch = 0;
+                    jump = 0;
+                    curr_state <= 3;
+                end
+                6'b000011: begin
+                    aluSource = 0;
+                    spmux = 0;
+                    aluOp = 2;
+                    branch = 0;
+                    jump = 0;
+                    curr_state <= 3;
+                end
+                6'b000100: begin
+                    aluSource = 0;
+                    spmux = 0;
+                    aluOp = 3;
+                    branch = 0;
+                    jump = 0;
+                    curr_state <= 3;
+                end
+                6'b000101: begin
+                    aluSource = 0;
+                    spmux = 0;
+                    aluOp = 4;
+                    branch = 0;
+                    jump = 0;
+                    curr_state <= 3;
+                end
+                6'b000110: begin
+                    aluSource = 0;
+                    spmux = 0;
+                    aluOp = 5;
+                    branch = 0;
+                    jump = 0;
+                    curr_state <= 3;
+                end
+                6'b000111: begin
+                    aluSource = 0;
+                    spmux = 0;
+                    aluOp = 6;
+                    branch = 0;
+                    jump = 0;
+                    curr_state <= 3;
+                end
+                6'b001000: begin
+                    aluSource = 0;
+                    spmux = 0;
+                    aluOp = 7;
+                    branch = 0;
+                    jump = 0;
+                    curr_state <= 3;
+                end
+                6'b001001: begin
+                    aluSource = 0;
+                    spmux = 0;
+                    aluOp = 8;
+                    branch = 0;
+                    jump = 0;
+                    curr_state <= 3;
+                end
+                6'b001010: begin
+                    aluSource = 0;
+                    spmux = 0;
+                    aluOp = 0;
+                    branch = 0;
+                    jump = 0;
+                    curr_state <= 3;
+                end
+                6'b001011: begin
+                    aluSource = 0;
+                    spmux = 0;
+                    aluOp = 0;
+                    branch = 0;
+                    jump = 0;
+                    curr_state <= 3;
+                end
+                
             endcase
             
             3: case(opcode)
-                6'b000000: begin
-                    curr_state <= 4;                    
+                6'b000000: curr_state <= 4;                    
+                6'b000001: curr_state <= 4;
+                6'b000010: curr_state <= 4;
+                6'b000011: curr_state <= 4;
+                6'b000100: curr_state <= 4;
+                6'b000101: curr_state <= 4;
+                6'b000110: curr_state <= 4;
+                6'b000111: curr_state <= 4;
+                6'b001000: curr_state <= 4;
+                6'b001001: curr_state <= 4;
+                6'b001010: begin
+                    retMem = 0;
+                    memRead = 1;
+                    curr_state <= 4;
+                end
+                6'b001011: begin
+                    retMem = 0;
+                    updateSP = 0;
+                    memWrite = 1;                   //kept it on for two cycles to write the data to memory
+                    curr_state <= 4;
                 end
             endcase
             4: case(opcode)
@@ -90,14 +196,148 @@ module control_unit (                      // so input is the instruction itself
                     regDest = 1;
                     curr_state <= 5;                  
                 end
+                6'b000001: begin
+                    memReg = 0;
+                    moveReg = 0;
+                    writeReg = 1;
+                    regDest = 0;
+                    curr_state <= 5;                  
+                end
+                6'b000010: begin
+                    memReg = 0;
+                    moveReg = 0;
+                    writeReg = 1;
+                    regDest = 0;
+                    curr_state <= 5;                  
+                end
+                6'b000011: begin
+                    memReg = 0;
+                    moveReg = 0;
+                    writeReg = 1;
+                    regDest = 0;
+                    curr_state <= 5;                  
+                end
+                6'b000100: begin
+                    memReg = 0;
+                    moveReg = 0;
+                    writeReg = 1;
+                    regDest = 0;
+                    curr_state <= 5;                  
+                end
+                6'b000101: begin
+                    memReg = 0;
+                    moveReg = 0;
+                    writeReg = 1;
+                    regDest = 0;
+                    curr_state <= 5;                  
+                end
+                6'b000110: begin
+                    memReg = 0;
+                    moveReg = 0;
+                    writeReg = 1;
+                    regDest = 0;
+                    curr_state <= 5;                  
+                end
+                6'b000111: begin
+                    memReg = 0;
+                    moveReg = 0;
+                    writeReg = 1;
+                    regDest = 0;
+                    curr_state <= 5;                  
+                end
+                6'b001000: begin
+                    memReg = 0;
+                    moveReg = 0;
+                    writeReg = 1;
+                    regDest = 0;
+                    curr_state <= 5;                  
+                end
+                6'b001001: begin
+                    memReg = 0;
+                    moveReg = 0;
+                    writeReg = 1;
+                    regDest = 0;
+                    curr_state <= 5;                  
+                end
+                6'b001010: begin
+                    retMem = 0;
+                    memRead = 1;
+                    curr_state <= 5;
+                end
+                6'b001010: begin
+                    retMem = 0;
+                    memRead = 1;
+                    curr_state <= 5;
+                end
+                6'b001011: begin
+                    memWrite = 1;
+                    curr_state <= 5;
+                end
+                
             endcase
             5: case(opcode)
                 6'b000000: begin
                     writeReg = 0;
                     curr_state <= 31;                                        
                 end
+                6'b000001: begin
+                    writeReg = 0;
+                    curr_state <= 31;                                        
+                end
+                6'b000010: begin
+                    writeReg = 0;
+                    curr_state <= 31;                                        
+                end
+                6'b000011: begin
+                    writeReg = 0;
+                    curr_state <= 31;                                        
+                end
+                6'b000100: begin
+                    writeReg = 0;
+                    curr_state <= 31;                                        
+                end
+                6'b000101: begin
+                    writeReg = 0;
+                    curr_state <= 31;                                        
+                end
+                6'b000110: begin
+                    writeReg = 0;
+                    curr_state <= 31;                                        
+                end
+                6'b000111: begin
+                    writeReg = 0;
+                    curr_state <= 31;                                        
+                end
+                6'b001000: begin
+                    writeReg = 0;
+                    curr_state <= 31;                                        
+                end
+                6'b001001: begin
+                    writeReg = 0;
+                    curr_state <= 31;                                        
+                end
+                6'b001010: begin
+                    memRead = 0;
+                    memReg = 1;
+                    moveReg = 0;
+                    writeReg = 1;
+                    regDest = 0;
+                    curr_state <= 6;                  
+                end
+                6'b001011: begin
+                    memWrite = 0;
+                    curr_state <= 31;
+                end
             endcase
 
+            6:case(opcode)
+                6'b001010: begin
+                    memReg = 0;
+                    writeReg = 0;
+                    regDest = 0;
+                    curr_state <= 31;                  
+                end
+            endcase
 
             31: begin
                 PCUpdate = 1;                
