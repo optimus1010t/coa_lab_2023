@@ -52,7 +52,7 @@ module instr_mem_mod(
     initial begin
         // $readmemb("regs_init_file_instr.data",inst_regs);
         // inst_regs[0]=32'b01000000001000000000000000001000;
-        inst_regs[0]=32'b01010100000000000000000000000010;
+        inst_regs[0]=32'b01010100000000000000000000000010;  // Ret is an I type instruction
         inst_regs[1]=32'b00000000101000010001000000000010;  // R2 = R1 & R5
         inst_regs[2]=32'b00000000101000010001100000000001;  // R3 = R5 - R1
         inst_regs[3]=32'b00000000111000110011100000000001;  // R7 = R7 - R3
