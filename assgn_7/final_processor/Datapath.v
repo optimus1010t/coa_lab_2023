@@ -176,7 +176,7 @@ adder add_N(
 );
 
 mux_2to1_32bit my_mF_retMem (
-    .in2(treg_addK_mF3),
+    .in2(treg_addK_mF2),
     .in1(alu_out),
     .sel(retMem),
     .out(w_mF_DM)

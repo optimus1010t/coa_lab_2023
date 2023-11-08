@@ -8,12 +8,12 @@ module data_mem_mod(
     reg [31:0] data_regs [1023:0];            // 1024 registers that act as memory of width 32 bits                                            
 
     initial begin
-        $dumpvars(0, data_regs[0], data_regs[1], data_regs[2], data_regs[3], data_regs[4], data_regs[5], data_regs[1021], data_regs[1022], data_regs[1023]);
+        $dumpvars(0, data_regs[0], data_regs[1], data_regs[2], data_regs[3], data_regs[4], data_regs[5], data_regs[1020], data_regs[1021], data_regs[1022], data_regs[1023]);
     end
     initial begin
         //$readmemb("regs_init_file_data.data",data_regs); // The external file that is used to initialize the RAM needs to be in bit vector form. External files in integer or hex format will not work.
         data_regs[0]=32'b00;
-        data_regs[1]=32'b01;
+        data_regs[1]=32'b11;
         data_regs[2]=32'b10;
         data_regs[3]=32'b111;
         data_regs[1022]=32'b101;
@@ -51,8 +51,8 @@ module instr_mem_mod(
 
     initial begin
         // $readmemb("regs_init_file_instr.data",inst_regs);
-        inst_regs[0]=32'b01000000001000000000000000001000;
-        inst_regs[0]=32'b01000100000000000000000000000010;  // BR 2
+        // inst_regs[0]=32'b01000000001000000000000000001000;
+        inst_regs[0]=32'b01010100000000000000000000000010;
         inst_regs[1]=32'b00000000101000010001000000000010;  // R2 = R1 & R5
         inst_regs[2]=32'b00000000101000010001100000000001;  // R3 = R5 - R1
         inst_regs[3]=32'b00000000111000110011100000000001;  // R7 = R7 - R3
