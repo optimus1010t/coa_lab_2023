@@ -209,6 +209,13 @@ module control_unit (                      // so input is the instruction itself
                     updateSP = 1;
                     curr_state <= 3;
                 end
+                6'b010101: begin
+                    retMem = 1;
+                    memRead = 1;
+                    readSP = 1;
+                    PM4 = 1;
+                    curr_state <= 3;
+                end
                     
 
                 
@@ -282,6 +289,12 @@ module control_unit (                      // so input is the instruction itself
                     branch = 0;
                     jump=1;
                     memWrite = 1;
+                    curr_state <= 4;
+                end
+                6'b010101: begin
+                    writeSP=1;
+                    retMem = 1;
+                    memRead = 1;
                     curr_state <= 4;
                 end
 
@@ -402,6 +415,13 @@ module control_unit (                      // so input is the instruction itself
                     writeSP = 1;
                     memWrite = 0;
                     curr_state <= 5;                    
+                end
+                6'b010101: begin
+                    writeSP=0;
+                    memReg = 1;
+                    retPC = 1;
+                    haltPC = 0;
+                    curr_state <= 31;
                 end
                 
             endcase
