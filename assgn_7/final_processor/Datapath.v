@@ -37,7 +37,7 @@ wire [31:0] alu_out;
 wire [31:0] w_addK_addH;
 wire [31:0] w_addK_mF;
 wire [31:0] w_DM_out,w_mF_DM;
-wire [31:0] w_mG_mH;
+wire [31:0] w_mG_mH,w_addH_mI;
 wire [31:0] w_signI_mJ,w_mJ_mK, w_mK_mL, w_mI_mJ,w_mE_DM;
 wire branchf;
 
@@ -56,6 +56,7 @@ reg [31:0] treg_addK_mF1, treg_addK_mF2, treg_addK_mF3;
 reg [31:0] treg_addK_addH1, treg_addK_addH2;
 reg [31:0] treg_addH_mI;
 reg [31:0] treg_addJ_mJ;
+
 always @(posedge clk)
 begin
     treg_aluout1 <= alu_out;

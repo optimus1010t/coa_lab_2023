@@ -165,6 +165,14 @@ module control_unit (                      // so input is the instruction itself
                 6'b001110: begin
                     curr_state <= 3;
                 end
+                6'b001111: begin
+                    aluSource = 1;
+                    spmux = 0;
+                    aluOp = 1;
+                    branch = 0;
+                    jump = 0;
+                    curr_state <= 3;
+                end
                 
             endcase
             
@@ -193,6 +201,11 @@ module control_unit (                      // so input is the instruction itself
                 6'b001110: begin
                     branch = 0;
                     jump=1;
+                    curr_state <= 4;
+                end
+                6'b001111: begin
+                    branch = 1;
+                    jump=0;
                     curr_state <= 4;
                 end
 
@@ -283,6 +296,11 @@ module control_unit (                      // so input is the instruction itself
                     curr_state <= 5;
                 end
                 6'b001110: begin
+                    retPC=0;
+                    haltPC=0;
+                    curr_state <= 31;
+                end
+                6'b001111: begin
                     retPC=0;
                     haltPC=0;
                     curr_state <= 31;
