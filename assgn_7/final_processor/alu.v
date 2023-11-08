@@ -28,6 +28,9 @@ module alu(
     assign SRA = input1 >> shamt;
     assign SRL = input1 >>> shamt;
 
+    initial begin
+        flags=3'b0;
+    end
     always @(*)
     begin
         flags[0] = input1 == 32'b0 ? 1'b1 : 1'b0;

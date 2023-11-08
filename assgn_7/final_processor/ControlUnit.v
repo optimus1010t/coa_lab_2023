@@ -60,8 +60,7 @@ module control_unit (                      // so input is the instruction itself
                 curr_state <= 1;                
             end
             // current instruction is in curr_instr
-            1: begin
-                
+            1: begin                
                 PCUpdate = 0;
                 curr_state <= 2;
             end
@@ -165,14 +164,44 @@ module control_unit (                      // so input is the instruction itself
                 6'b001110: begin
                     curr_state <= 3;
                 end
-                6'b001111: begin
+                6'b001111, 6'b010000, 6'b010001: begin
                     aluSource = 1;
                     spmux = 0;
-                    aluOp = 1;
+                    aluOp = 0;
                     branch = 0;
                     jump = 0;
                     curr_state <= 3;
                 end
+                6'b010111: begin
+                    haltPC = 1;
+                    curr_state <= 31;
+                end
+                6'b011000: begin
+                    curr_state <= 3;
+                end
+                6'b010110:begin
+                    curr_state <= 3;
+                end
+                6'b010010: begin
+                    readSP = 1;
+                    PM4 = 1;
+                    spmux = 1;
+                    aluOp = 0;
+                    retMem = 0;
+                    updateSP = 0;
+                    curr_state <= 3;                    
+                end
+                6'b010011: begin
+                    readSP = 1;
+                    aluSource = 1;
+                    spmux = 0;
+                    aluOp = 0;
+                    retMem = 0;
+                    updateSP = 0;
+                    memRead = 1;
+                    curr_state <= 3;
+                end
+
                 
             endcase
             
@@ -206,6 +235,38 @@ module control_unit (                      // so input is the instruction itself
                 6'b001111: begin
                     branch = 1;
                     jump=0;
+                    curr_state <= 4;
+                end
+                6'b010000: begin
+                    branch = 2;
+                    jump=0;
+                    curr_state <= 4;
+                end
+                6'b010001: begin
+                    branch = 3;
+                    jump=0;
+                    curr_state <= 4;
+                end
+                6'b011000: begin
+                    curr_state <= 31;
+                end
+                6'b010110:begin
+                    curr_state <= 4;
+                end
+                6'b010010: begin
+                    memWrite=1;
+                    writeSP = 1;
+                    readSP = 1;
+                    curr_state <= 4;                    
+                end
+                6'b010011: begin
+                    readSP = 1;
+                    aluSource = 1;
+                    spmux = 0;
+                    aluOp = 0;
+                    retMem = 0;
+                    updateSP = 0;
+                    memRead = 1;
                     curr_state <= 4;
                 end
 
@@ -281,11 +342,6 @@ module control_unit (                      // so input is the instruction itself
                     regDest = 0;
                     curr_state <= 5;                  
                 end
-                6'b001010: begin
-                    retMem = 0;
-                    memRead = 1;
-                    curr_state <= 5;
-                end
                 6'b001010, 6'b001100: begin
                     retMem = 0;
                     memRead = 1;
@@ -297,13 +353,34 @@ module control_unit (                      // so input is the instruction itself
                 end
                 6'b001110: begin
                     retPC=0;
-                    haltPC=0;
                     curr_state <= 31;
                 end
-                6'b001111: begin
+                6'b001111, 6'b010000, 6'b010001: begin
                     retPC=0;
-                    haltPC=0;
                     curr_state <= 31;
+                end
+                6'b010110:begin
+                    memReg = 0;
+                    moveReg = 1;
+                    writeReg = 1;
+                    regDest = 1;
+                    curr_state <= 5;
+                end
+                6'b010010: begin
+                    memWrite=0;
+                    writeSP = 0;
+                    readSP = 0;
+                    curr_state <= 31;                    
+                end
+                6'b010011: begin
+                    memReg=1;
+                    moveReg = 0;
+                    regDest = 1;
+                    writeReg = 1;
+                    PM4 = 0;
+                    readSP = 1;
+                    writeSP = 1;
+                    curr_state <= 5;
                 end
                 
             endcase
@@ -360,6 +437,23 @@ module control_unit (                      // so input is the instruction itself
                     memWrite = 0;
                     curr_state <= 31;
                 end
+                6'b010110:begin
+                    memReg = 0;
+                    moveReg = 0;
+                    writeReg = 0;
+                    regDest = 0;
+                    curr_state <= 31;
+                end
+                6'b010011: begin
+                    memReg=1;
+                    moveReg = 0;
+                    regDest = 0;
+                    writeReg = 0;
+                    PM4 = 0;
+                    readSP = 0;
+                    writeSP = 0;
+                    curr_state <= 31;
+                end
             endcase
 
             6:case(opcode)
@@ -368,6 +462,16 @@ module control_unit (                      // so input is the instruction itself
                     writeReg = 0;
                     regDest = 0;
                     curr_state <= 31;                  
+                end
+                6'b010011: begin
+                    memReg=1;
+                    moveReg = 0;
+                    regDest = 1;
+                    writeReg = 1;
+                    spmux = 0;
+                    aluOp = 0;
+                    retMem = 0;
+                    updateSP = 0;
                 end
             endcase
 
@@ -390,7 +494,7 @@ module control_unit (                      // so input is the instruction itself
                 jump = 0;
                 branch = 0;
                 retPC = 0;
-                haltPC = 0;
+                // haltPC = 0;
                 curr_state <= 0;
             end
         endcase

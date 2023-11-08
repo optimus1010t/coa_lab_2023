@@ -8,7 +8,7 @@ module data_mem_mod(
     reg [31:0] data_regs [1023:0];            // 1024 registers that act as memory of width 32 bits                                            
 
     initial begin
-        $dumpvars(0, data_regs[0], data_regs[1], data_regs[2], data_regs[3], data_regs[4], data_regs[5]);
+        $dumpvars(0, data_regs[0], data_regs[1], data_regs[2], data_regs[3], data_regs[4], data_regs[5], data_regs[1021], data_regs[1022], data_regs[1023]);
     end
     initial begin
         //$readmemb("regs_init_file_data.data",data_regs); // The external file that is used to initialize the RAM needs to be in bit vector form. External files in integer or hex format will not work.
@@ -16,6 +16,7 @@ module data_mem_mod(
         data_regs[1]=32'b01;
         data_regs[2]=32'b10;
         data_regs[3]=32'b111;
+        data_regs[1022]=32'b101;
     end                                       // The $readmemb and $readmemh system tasks can be used to initialize block memories. For more information, see:
                                               // Initializing RAM From an External File Coding Examples
                                               // Use $readmemb for binary and $readmemh for hexadecimal representation. To avoid the possible difference between XST and simulator behavior, Xilinx® recommends that you use index parameters in these system tasks. See the following coding example.
@@ -50,17 +51,27 @@ module instr_mem_mod(
 
     initial begin
         // $readmemb("regs_init_file_instr.data",inst_regs);
-        inst_regs[0]=32'b00111100001000000000000000001000;
+        inst_regs[0]=32'b01000000001000000000000000001000;
+        inst_regs[0]=32'b01000100000000000000000000000010;  // BR 2
         inst_regs[1]=32'b00000000101000010001000000000010;  // R2 = R1 & R5
         inst_regs[2]=32'b00000000101000010001100000000001;  // R3 = R5 - R1
         inst_regs[3]=32'b00000000111000110011100000000001;  // R7 = R7 - R3
         inst_regs[4]=32'b00000100101011110000000000000111;  // R15 = R5 + 7
         inst_regs[5]=32'b00101000010011100000000000000001;  // R14 = MEM[R2+1]
         inst_regs[6]=32'b00101100010011100000000000000011;  // MEM[R2+3] = R14
-        inst_regs[7]=32'b00110000010111110000000000000010;  // SP = MEM[R2 + 2]
-        inst_regs[8]=32'b00110100010111110000000000000100;  // MEM[R2+4] = SP
-        inst_regs[9]=32'b00111000000000000000000000000001;  // BR 0
-        inst_regs[10]=32'b00111100001000000000000000001001; // BMI R1 , 9 (passsed zero as sr2 for comarision)
+        inst_regs[7]=32'b01001000000000100000000000000000;  // PUSH R2 // first subtract 1 from sp then add value to that mem location
+        inst_regs[8]=32'b01001100000000000100000000000000;  // POP R8  
+
+        inst_regs[9]=32'b01011000111000000111000000000000;  // R14 = R7
+        inst_regs[10]=32'b01100000000000000000000000000000;  // NOP
+        inst_regs[11]=32'b01011100000000000000000000000000;  // HALT        
+        // inst_regs[7]=32'b00110000010111110000000000000010;  // SP = MEM[R2 + 2]
+        // inst_regs[8]=32'b00110100010111110000000000000100;  // MEM[R2+4] = SP
+        // inst_regs[9]=32'b00111011111111111111111111111000;  // BR -8
+        // inst_regs[9]=32'b00111011111111111111111111111000;  // BR -8
+        // inst_regs[10]=32'b00111100001000000000000000001001; // BMI R1 , 9
+        // inst_regs[11]=32'b01000000001000000000000000001001; // BPI R1 , 9
+        // inst_regs[0]=32'b01000100000000000000000000000011;  // BZ  R0 , 3s
     end
     always @(*) begin
     if (memReadIM) begin                            // read ports are always updated based on the address of the source registers    

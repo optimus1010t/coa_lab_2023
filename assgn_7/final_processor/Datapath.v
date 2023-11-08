@@ -8,7 +8,7 @@ module datapath (
     input regDest,
     input writeSP, readSP, updateSP, writeReg,
     input aluSource,
-    input PM4,spmmux, 
+    input PM4, 
     input retMem,
     input memRead,
     input memWrite,
@@ -38,7 +38,7 @@ wire [31:0] w_addK_addH;
 wire [31:0] w_addK_mF;
 wire [31:0] w_DM_out,w_mF_DM;
 wire [31:0] w_mG_mH,w_addH_mI;
-wire [31:0] w_signI_mJ,w_mJ_mK, w_mK_mL, w_mI_mJ,w_mE_DM;
+wire [31:0] w_signI_mJ,w_mJ_mK, w_mK_mL, w_mI_mJ,w_mE_DM,w_addJ_mJ,w_addN_wdataSP;
 wire branchf;
 
 
@@ -115,7 +115,7 @@ regbank my_RB (
     .sr2(w_IM_out[20:16]),
     .dr(w_mA_RBdest),
     .write_data(w_mH_RB),           // default to zero ???? might change later
-    .write_dataSP(0),               // default to zero ???? might change later
+    .write_dataSP(w_addN_wdataSP),               // default to zero ???? might change later
     .read_data1(readData1),
     .read_data2(readData2)
 );
@@ -139,7 +139,7 @@ mux_2to1_32bit my_mB_PM4 (
     .out(w_mB_mD)
 );
 
-mux_2to1_5bit my_mC_aluSource (
+mux_2to1_32bit my_mC_aluSource (
     .in2(readData2),
     .in1(treg_signD_mC),
     .sel(aluSource),
@@ -167,6 +167,12 @@ adder add_K(
     .in1(PCoutput),
     .in2(32'b00000000000000000000000000000001),         // +1 in our case
     .out(w_addK_addH)
+);
+
+adder add_N(
+    .in1(readData1),
+    .in2(w_mB_addN),
+    .out(w_addN_wdataSP)
 );
 
 mux_2to1_32bit my_mF_retMem (

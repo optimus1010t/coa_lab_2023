@@ -14,13 +14,13 @@ else begin                              // check if latch is induced or wire ???
         branchf = 0;
     end
     else if (branch == 2'b01) begin
-        branchf = flags[2];
+        branchf = flags[1];
     end
     else if (branch == 2'b10) begin
-        branchf = ~flags[2];
+        branchf = ~flags[1];
     end
     else if (branch == 2'b11) begin
-        branchf = flags[2];
+        branchf = flags[0];
     end
 end
 end
