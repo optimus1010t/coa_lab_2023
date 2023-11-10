@@ -40,7 +40,9 @@ wire [31:0] w_DM_out,w_mF_DM;
 wire [31:0] w_mG_mH,w_addH_mI;
 wire [31:0] w_signI_mJ,w_mJ_mK, w_mK_mL, w_mI_mJ,w_mE_DM,w_addJ_mJ,w_addN_wdataSP;
 wire branchf;
+wire immorinput2, w_mux_shamt;
 
+assign immorinput2 =w_IM_out[29]|w_IM_out[28];
 
 assign w_mB_addN = w_mB_mD;         // output of mux B to adder N for SP 
 
@@ -153,11 +155,18 @@ mux_2to1_32bit my_mD_spmux (
     .out(w_mD_ALU)
 );
 
+mux_2to1_32bit my_mshamt_immorinput2 (
+    .in1(w_mD_ALU[0]),         // +1 or -1 in our case
+    .in2(w_IM_out[25]),
+    .sel(immorinput2),
+    .out(w_mux_shamt)
+);
+
 
 alu my_ALU (
     .input1(readData1),
     .input2(w_mD_ALU),
-    .shamt(w_IM_out[25]),
+    .shamt(w_mux_shamt),
     .func(aluOp),        
     .out(alu_out),
     .flags(alu_flags)
