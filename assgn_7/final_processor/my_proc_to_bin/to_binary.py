@@ -26,7 +26,7 @@ def emit_bin_instr(line):
             funcode=int(funcode_b,2)
             if len(line)!=4:
                 print(f"error in line {line}")
-                return    #gives nbit long two complement representation of number
+                return
             else:
                 rs=f"{REG_VAL[line[2]]:05b}"
                 rt=f"{REG_VAL[line[3]]:05b}"
