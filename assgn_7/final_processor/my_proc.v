@@ -7,6 +7,9 @@ module processor(
     output [31:0] finalout
 );
 
+// ???? need to check shift imm and not imm operations
+// ???? check alu operations once again
+
 wire [5:0] opcode;
 wire [5:0] func;
 wire [31:0] im_out;

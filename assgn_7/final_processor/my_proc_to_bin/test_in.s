@@ -1,0 +1,36 @@
+#1: 
+AND R2, R1, R5
+#2:
+SUB R3,R5,R1
+#3:
+ADDI R15, R5, 7
+#4:
+LD R14, 1(R2)
+#5:
+ST R14, 3(R2)
+#6:
+PUSH R2
+#7:
+POP R8
+#8:
+MOVE R14, R7
+#9:
+CALL 2
+#10:
+RET
+#11:
+LDSP SP, 1(R2)
+#12:
+STSP SP, 3(R2)
+#13:
+BR -8
+#14:
+BMI R1 , 9
+#15:
+BPL R1 , 9
+#16:
+BZ  R0 , 3
+#17:
+NOP
+#18:
+HALT

@@ -52,7 +52,7 @@ module instr_mem_mod(
     initial begin
         // $readmemb("regs_init_file_instr.data",inst_regs);
         // inst_regs[0]=32'b01000000001000000000000000001000;
-        inst_regs[0]=32'b01010100000000000000000000000010;  // Ret is an I type instruction
+        inst_regs[0]=32'b01010100000000000000000000000000;  // Ret is an I type instruction
         inst_regs[1]=32'b00000000101000010001000000000010;  // R2 = R1 & R5
         inst_regs[2]=32'b00000000101000010001100000000001;  // R3 = R5 - R1
         inst_regs[3]=32'b00000000111000110011100000000001;  // R7 = R7 - R3
@@ -68,10 +68,9 @@ module instr_mem_mod(
         // inst_regs[7]=32'b00110000010111110000000000000010;  // SP = MEM[R2 + 2]
         // inst_regs[8]=32'b00110100010111110000000000000100;  // MEM[R2+4] = SP
         // inst_regs[9]=32'b00111011111111111111111111111000;  // BR -8
-        // inst_regs[9]=32'b00111011111111111111111111111000;  // BR -8
         // inst_regs[10]=32'b00111100001000000000000000001001; // BMI R1 , 9
         // inst_regs[11]=32'b01000000001000000000000000001001; // BPI R1 , 9
-        // inst_regs[0]=32'b01000100000000000000000000000011;  // BZ  R0 , 3s
+        // inst_regs[0]=32'b01000100000000000000000000000011;  // BZ  R0 , 3
     end
     always @(*) begin
     if (memReadIM) begin                            // read ports are always updated based on the address of the source registers    
