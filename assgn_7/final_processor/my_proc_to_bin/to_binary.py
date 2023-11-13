@@ -54,7 +54,12 @@ def emit_bin_instr(line):
                 rt=f"{REG_VAL[line[1]]:05b}"
                 imm_dec=int(line[2])
                 imm=twos_complement(imm_dec,16)
-                print(f"{opcode_b}{rs}{rt}{imm},", file = OUTPUT_FILE)
+                if(opcode == 10 or opcode == 11):
+                    print(f"{opcode_b}{rs}{rt}{imm},", file = OUTPUT_FILE)
+                else:
+                    rt=f"{31:05b}"
+                    print(f"{opcode_b}{rs}{rt}{imm},", file = OUTPUT_FILE)
+
         elif opcode == 14:
             if len(line)!=2:
                 print(f"error in line {line}")
