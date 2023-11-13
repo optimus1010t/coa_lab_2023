@@ -156,8 +156,8 @@ mux_2to1_32bit my_mD_spmux (
 );
 
 mux_2to1_32bit my_mshamt_immorinput2 (
-    .in1(w_mD_ALU[0]),         // +1 or -1 in our case
-    .in2(w_IM_out[25]),
+    .in1(w_mD_ALU[25]),         // +1 or -1 in our case
+    .in2(w_IM_out[0]),
     .sel(immorinput2),
     .out(w_mux_shamt)
 );
