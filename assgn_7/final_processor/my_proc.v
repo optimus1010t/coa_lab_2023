@@ -7,13 +7,12 @@ module processor(
     output [31:0] finalout
 );
 
-// ???? need to check shift imm and not imm operations
-// ???? check alu operations once again
+
 
 wire [31:0] im_out;
 wire [3:0] aluOp;
 
-wire PCUpdate;                   // Added this to know when to update the PC ???? dont know whether this is needed
+wire PCUpdate;                   // Added this to know when to update the PC
 wire regDest;
 wire writeSP;
 wire readSP;

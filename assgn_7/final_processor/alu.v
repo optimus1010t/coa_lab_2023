@@ -25,8 +25,8 @@ module alu(
     assign XOR = input1 ^ input2;
     assign NOT = ~input1;
     assign SLA = input1 << shamt;
-    assign SRA = input1 >> shamt;
-    assign SRL = input1 >>> shamt;
+    assign SRA = input1 >>> shamt;
+    assign SRL = input1 >> shamt;
 
     initial begin
         flags=3'b0;

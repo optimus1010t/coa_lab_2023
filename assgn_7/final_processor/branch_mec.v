@@ -9,7 +9,7 @@ always@(*)begin
 if (reset) begin
     branchf = 0;
 end
-else begin                              // check if latch is induced or wire ????
+else begin                            
     if (branch == 2'b00) begin
         branchf = 0;
     end

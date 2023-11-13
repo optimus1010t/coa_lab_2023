@@ -91,7 +91,7 @@ end
 
 PC my_PC (
     .clk(clk),
-    .reset(1'b0),                  // default to zero ???? might change later
+    .reset(1'b0),                  
     .PCinput(PCinput),
     .PCUpdate(PCUpdate),
     .PCoutput(PCoutput)
@@ -101,23 +101,23 @@ instr_mem_mod my_IM (
     .clk(clk),
     .memWriteIM(1'b0),
     .memReadIM(1'b1),
-    .reset(1'b0),                  // default to zero ???? might change later
+    .reset(1'b0),                  
     .sr(PCoutput),
     .write_data(32'b0),
-    .read_data(w_IM_out)           // default to zero ???? might change later    
+    .read_data(w_IM_out)               
 );
 
 regbank my_RB (
     .clk(clk),
-    .reset(1'b0),                  // default to zero ???? might change later
+    .reset(1'b0),                  
     .writeSP(writeSP),
     .readSP(readSP),
     .writeReg(writeReg),
     .sr1(w_IM_out[25:21]),
     .sr2(w_IM_out[20:16]),
     .dr(w_mA_RBdest),
-    .write_data(w_mH_RB),           // default to zero ???? might change later
-    .write_dataSP(w_addN_wdataSP),               // default to zero ???? might change later
+    .write_data(w_mH_RB),           
+    .write_dataSP(w_addN_wdataSP),               
     .read_data1(readData1),
     .read_data2(readData2)
 );
@@ -202,10 +202,10 @@ data_mem_mod DM(
     .clk(clk),
     .memWrite(memWrite),
     .memRead(memRead),
-    .reset(0),                  // default to zero ???? might change later
+    .reset(0),                  
     .sr(w_mF_DM),
     .write_data(w_mE_DM),
-    .read_data(w_DM_out)               // default to zero ???? might change later    
+    .read_data(w_DM_out)                   
 );
 
 mux_2to1_32bit my_mG_memReg (
@@ -269,7 +269,7 @@ mux_2to1_32bit my_mL_haltPC (
 
 branching_mech my_BM(
     .clk(clk),
-    .reset(0),                  // default to zero ???? might change later
+    .reset(0),                  
     .branch(branch),
     .flags(alu_flags),
     .branchf(branchf)

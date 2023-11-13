@@ -3,7 +3,7 @@ module control_unit (                      // so input is the instruction itself
     input wire [5:0] opcode,   
     input wire [5:0] funct,
     input clk,
-    output reg PCUpdate,                   // Added this to know when to update the PC ???? dont know whether this is needed
+    output reg PCUpdate,                   // Added this to know when to update the PC
     output reg regDest,
     output reg writeSP,
     output reg readSP,
@@ -48,7 +48,7 @@ module control_unit (                      // so input is the instruction itself
         haltPC = 0;
     end
         
-    // ???? add the button press logic to initialise PC for now I am setting it to zero by default
+
     initial begin
         $dumpvars(0, curr_state);
     end

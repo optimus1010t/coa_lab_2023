@@ -2,9 +2,6 @@ import sys
 import re
 import json
 
-# ???? remove comments checked: alu(0), alu(imm), LD, ST, POP, PUSH, MOVE, NOP, 
-# HALT, CALL, RET, LDSP, STSP, BR, BMI, BPL, BZ
-# ???? left to check: 
 
 REG_VAL = {}
 ISA_ENCODING = {}
@@ -15,7 +12,6 @@ def twos_complement(num,nbits):    # gives nbit long two complement representati
     else:
         return f"{((1<<nbits)+num):0{nbits}b}"
 
-#???? check for whther rd is sp or not in ldsp and stsp
 def emit_bin_instr(line):
     try:
         opcode_b=ISA_ENCODING[line[0]][0]

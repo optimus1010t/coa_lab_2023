@@ -23,7 +23,7 @@ module data_mem_mod(
     always @(posedge clk)                     // write always happens on posedge of the clock
     begin
         if (reset) begin 
-            // setting everything to zero ???? need to update
+            // setting everything to zero need to update
         end
         else begin                            
             if (memWrite)                     // write to register only when writeReg is high    
@@ -54,7 +54,7 @@ module instr_mem_mod(
     always @(posedge clk)                     // write always happens on posedge of the clock
     begin
         if (reset) begin 
-            // setting everything to zero ???? need to update
+            // setting everything to zero need to update
         end
         else begin                            
             if (memWrite)                     // write to register only when writeReg is high    
