@@ -13,8 +13,8 @@ module data_mem_mod(
     initial begin
         //$readmemb("regs_init_file_data.data",data_regs); // The external file that is used to initialize the RAM needs to be in bit vector form. External files in integer or hex format will not work.
         data_regs[0]=32'b00;
-        data_regs[1]=32'b11;
-        data_regs[2]=32'b10;
+        data_regs[1]=32'b1000;
+        data_regs[2]=32'b100;
         data_regs[3]=32'b111;
         data_regs[1022]=32'b101;
     end                                       // The $readmemb and $readmemh system tasks can be used to initialize block memories. For more information, see:
@@ -51,26 +51,40 @@ module instr_mem_mod(
 
     initial begin
         // $readmemb("regs_init_file_instr.data",inst_regs);
+        inst_regs[0]= 32'b01100000000000000000000000000000;
+        inst_regs[1]= 32'b01100000000000000000000000000000;
+        inst_regs[2]= 32'b00101000000000010000000000000001;
+        inst_regs[3]= 32'b00101000000000100000000000000010;
+        inst_regs[4]= 32'b00000000001000100001100000000001;
+        inst_regs[5]= 32'b01000000011000000000000000000011;
+        inst_regs[6]= 32'b01011000001000000001100000000000;
+        inst_regs[7]= 32'b01011000010000000000100000000000;
+        inst_regs[8]= 32'b01011000011000000001000000000000;
+        inst_regs[9]= 32'b01000100010000000000000000000010;
+        inst_regs[10]= 32'b00000000001000100000100000000001;
+        inst_regs[11]= 32'b00111011111111111111111111111000;
+        inst_regs[12]= 32'b01011000001000000111100000000000;
+        inst_regs[13]= 32'b01011100000000000000000000000000;
         // inst_regs[0]=32'b01000000001000000000000000001000;
-        inst_regs[0]=32'b01010100000000000000000000000000;  // Ret is an I type instruction
-        inst_regs[1]=32'b00000000101000010001000000000010;  // R2 = R1 & R5
-        inst_regs[2]=32'b00000000101000010001100000000001;  // R3 = R5 - R1
-        inst_regs[3]=32'b00000000111000110011100000000001;  // R7 = R7 - R3
-        inst_regs[4]=32'b00000100101011110000000000000111;  // R15 = R5 + 7
-        inst_regs[5]=32'b00101000010011100000000000000001;  // R14 = MEM[R2+1]
-        inst_regs[6]=32'b00101100010011100000000000000011;  // MEM[R2+3] = R14
-        inst_regs[7]=32'b01001000000000100000000000000000;  // PUSH R2 // first subtract 1 from sp then add value to that mem location
-        inst_regs[8]=32'b01001100000000000100000000000000;  // POP R8  
+        // inst_regs[0]=32'b01010100000000000000000000000000;  // Ret is an I type instruction
+        // inst_regs[1]=32'b00000000101000010001000000000010;  // R2 = R1 & R5
+        // inst_regs[2]=32'b00000000101000010001100000000001;  // R3 = R5 - R1
+        // inst_regs[3]=32'b00000000111000110011100000000001;  // R7 = R7 - R3
+        // inst_regs[4]=32'b00000100101011110000000000000111;  // R15 = R5 + 7
+        // inst_regs[5]=32'b00101000010011100000000000000001;  // R14 = MEM[R2+1]
+        // inst_regs[6]=32'b00101100010011100000000000000011;  // MEM[R2+3] = R14
+        // inst_regs[7]=32'b01001000000000100000000000000000;  // PUSH R2 // first subtract 1 from sp then add value to that mem location
+        // inst_regs[8]=32'b01001100000000000100000000000000;  // POP R8  
 
-        inst_regs[9]=32'b01011000111000000111000000000000;  // R14 = R7
-        inst_regs[10]=32'b01100000000000000000000000000000;  // NOP
-        inst_regs[11]=32'b01011100000000000000000000000000;  // HALT        
-        // inst_regs[7]=32'b00110000010111110000000000000010;  // SP = MEM[R2 + 2]
-        // inst_regs[8]=32'b00110100010111110000000000000100;  // MEM[R2+4] = SP
-        // inst_regs[9]=32'b00111011111111111111111111111000;  // BR -8
-        // inst_regs[10]=32'b00111100001000000000000000001001; // BMI R1 , 9
-        // inst_regs[11]=32'b01000000001000000000000000001001; // BPI R1 , 9
-        // inst_regs[0]=32'b01000100000000000000000000000011;  // BZ  R0 , 3
+        // inst_regs[9]=32'b01011000111000000111000000000000;  // R14 = R7
+        // inst_regs[10]=32'b01100000000000000000000000000000;  // NOP
+        // inst_regs[11]=32'b01011100000000000000000000000000;  // HALT        
+        // // inst_regs[7]=32'b00110000010111110000000000000010;  // SP = MEM[R2 + 2]
+        // // inst_regs[8]=32'b00110100010111110000000000000100;  // MEM[R2+4] = SP
+        // // inst_regs[9]=32'b00111011111111111111111111111000;  // BR -8
+        // // inst_regs[10]=32'b00111100001000000000000000001001; // BMI R1 , 9
+        // // inst_regs[11]=32'b01000000001000000000000000001001; // BPI R1 , 9
+        // // inst_regs[0]=32'b01000100000000000000000000000011;  // BZ  R0 , 3
     end
     always @(*) begin
     if (memReadIM) begin                            // read ports are always updated based on the address of the source registers    

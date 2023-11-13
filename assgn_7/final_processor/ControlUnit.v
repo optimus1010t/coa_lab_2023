@@ -291,7 +291,7 @@ module control_unit (                      // so input is the instruction itself
                     curr_state <= 4;
                 end
                 6'b011000: begin
-                    curr_state <= 31;
+                    curr_state <= 4;
                 end
                 6'b010110:begin
                     curr_state <= 4;
@@ -469,6 +469,9 @@ module control_unit (                      // so input is the instruction itself
                     haltPC = 0;
                     PCUpdate = 0;
                     curr_state <= 5;
+                end
+                6'b011000: begin
+                    curr_state <= 31;
                 end
                 
             endcase
